@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hệ thống Góp ý dự thảo trực tuyến</title>
+  <!-- Mô tả khi chia sẻ link (tùy chọn) -->
+  <meta name="description" content="Hệ thống góp ý dự thảo văn bản trực tuyến - Ngành Giáo dục">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='18' font-size='18'>📝</text></svg>">
+  <style>
+    /* Xóa mọi lề mặc định, cho trang chiếm trọn màn hình */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+    /* iframe phủ kín toàn bộ khung nhìn → che hoàn toàn banner xanh của Google */
+    #appFrame {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    /* Màn hình chờ trong lúc ứng dụng tải */
+    #loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: #f1f5f9;
+      z-index: 10;
+      transition: opacity .4s ease;
+    }
+    #loading.hide { opacity: 0; pointer-events: none; }
+    .spinner {
+      width: 46px; height: 46px;
+      border: 5px solid #cbd5e1;
+      border-top-color: #1d4ed8;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading .txt { color: #475569; font-size: 14px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <!-- Màn chờ -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <div class="txt">Đang tải hệ thống góp ý…</div>
+  </div>
+
+  <!--
+    ▼▼▼  DÁN URL WEB APP CỦA BẠN VÀO THUỘC TÍNH src BÊN DƯỚI  ▼▼▼
+    URL có dạng: https://script.google.com/macros/s/AKfyc..…/exec
+    (lấy ở bước Deploy → Manage deployments → Web app URL)
+  -->
+  <iframe
+    id="appFrame"
+    src="https://script.google.com/macros/s/AKfycbwO_bKoiTKLLrBzdz5b7FUs3t1PZ7WrFVbly4_wEkqmOdZDJo3GBP2h_o22G_RwrVPM9w/exec"
+    allow="clipboard-read; clipboard-write; fullscreen"
+    referrerpolicy="no-referrer">
+  </iframe>
+
+  <script>
+    // Ẩn màn chờ khi iframe đã tải xong nội dung
+    var frame = document.getElementById('appFrame');
+    var loading = document.getElementById('loading');
+    frame.addEventListener('load', function () {
+      setTimeout(function () { loading.classList.add('hide'); }, 400);
+    });
+    // Dự phòng: nếu sự kiện load không kích hoạt, vẫn ẩn sau 6 giây
+    setTimeout(function () { loading.classList.add('hide'); }, 6000);
+  </script>
+</body>
+</html>
